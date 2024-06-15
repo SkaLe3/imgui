@@ -12,6 +12,10 @@ examples/*/Debug/*
 examples/*/Release/*
 examples/*/x64/*
 
+## VieM project
+**/bin/
+**/bin-int/
+
 ## Visual Studio artifacts
 .vs
 ipch
