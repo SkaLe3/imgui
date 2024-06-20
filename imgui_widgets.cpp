@@ -1069,7 +1069,7 @@ bool ImGui::ImageButtonEx(ImGuiID id, ImTextureID texture_id, const ImVec2& imag
     ImGui::KeepAliveID(id);
 
 	const ImVec2 padding = g.Style.FramePadding;
-    const ImRect bb(window->DC.CursorPos, window->DC.CursorPos + size + padding * 2);
+    const ImRect bb(window->DC.CursorPos, window->DC.CursorPos + image_size + padding * 2);
     ItemSize(bb);
     if (!ItemAdd(bb, id))
         return false;
