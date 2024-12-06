@@ -3,6 +3,8 @@ project "ImGui"
 	language "C++"
     staticruntime "off"
 
+	location ".\\"
+
 	targetdir (tp_bin_out)
 	objdir (tp_int_out)
 
