@@ -24,6 +24,14 @@ project "ImGui"
 		"imgui_demo.cpp"
 	}
 
+	includedirs
+	{
+		imgui_mathlib_path,
+		imgui_config_path
+	}
+
+	--defines { 'IMGUI_USER_CONFIG=' .. '"' .. imgui_config_file .. '"' }
+
 	filter "system:windows"
 		systemversion "latest"
 		cppdialect "C++20"
