@@ -345,9 +345,26 @@ static bool ImGui_ImplGlfw_ShouldChainCallback(GLFWwindow* window)
     ImGui_ImplGlfw_Data* bd = ImGui_ImplGlfw_GetBackendData();
     return bd->CallbacksChainForAllWindows ? true : (window == bd->Window);
 }
+// --- BEGIN: Custom modification ---
+// Modified by SkaLe
+// Extern function pointers for application-provided callback.
+// Defined in the application. Must be set before imgui initialization.
+extern void(*g_CustomMouseButtonCallback)(void*, int, int, int);
+extern void(*g_CustomMouseScrollCallback)(void*, double, double);
+extern void(*g_CustomKeyCallback)(void*, int, int, int, int);
+extern void(*g_CustomWindowFocusCallback)(void*, int);
+extern void(*g_CustomCursorPosCallback)(void*, double, double);
+extern void(*g_CustomCursorEnterCallback)(void*, int);
+extern void(*g_CustomCharCallback)(void*, unsigned int);
+// --- END: Custom modification ---
 
 void ImGui_ImplGlfw_MouseButtonCallback(GLFWwindow* window, int button, int action, int mods)
 {
+    /* == Modified by SkaLe == */
+    if (g_CustomMouseButtonCallback)
+        g_CustomMouseButtonCallback(window, button, action, mods);
+    /* ======================= */
+
     ImGui_ImplGlfw_Data* bd = ImGui_ImplGlfw_GetBackendData();
     if (bd->PrevUserCallbackMousebutton != nullptr && ImGui_ImplGlfw_ShouldChainCallback(window))
         bd->PrevUserCallbackMousebutton(window, button, action, mods);
@@ -361,6 +378,11 @@ void ImGui_ImplGlfw_MouseButtonCallback(GLFWwindow* window, int button, int acti
 
 void ImGui_ImplGlfw_ScrollCallback(GLFWwindow* window, double xoffset, double yoffset)
 {
+    /* == Modified by SkaLe == */
+    if (g_CustomMouseScrollCallback)
+        g_CustomMouseScrollCallback(window, xoffset, yoffset);
+    /* ======================= */
+
     ImGui_ImplGlfw_Data* bd = ImGui_ImplGlfw_GetBackendData();
     if (bd->PrevUserCallbackScroll != nullptr && ImGui_ImplGlfw_ShouldChainCallback(window))
         bd->PrevUserCallbackScroll(window, xoffset, yoffset);
@@ -409,6 +431,11 @@ static int ImGui_ImplGlfw_TranslateUntranslatedKey(int key, int scancode)
 
 void ImGui_ImplGlfw_KeyCallback(GLFWwindow* window, int keycode, int scancode, int action, int mods)
 {
+    /* == Modified by SkaLe == */
+    if (g_CustomKeyCallback)
+        g_CustomKeyCallback(window, keycode, scancode, action, mods);
+    /* ======================= */
+
     ImGui_ImplGlfw_Data* bd = ImGui_ImplGlfw_GetBackendData();
     if (bd->PrevUserCallbackKey != nullptr && ImGui_ImplGlfw_ShouldChainCallback(window))
         bd->PrevUserCallbackKey(window, keycode, scancode, action, mods);
@@ -431,6 +458,11 @@ void ImGui_ImplGlfw_KeyCallback(GLFWwindow* window, int keycode, int scancode, i
 
 void ImGui_ImplGlfw_WindowFocusCallback(GLFWwindow* window, int focused)
 {
+    /* == Modified by SkaLe == */
+    if (g_CustomWindowFocusCallback)
+        g_CustomWindowFocusCallback(window, focused);
+    /* ======================= */
+
     ImGui_ImplGlfw_Data* bd = ImGui_ImplGlfw_GetBackendData();
     if (bd->PrevUserCallbackWindowFocus != nullptr && ImGui_ImplGlfw_ShouldChainCallback(window))
         bd->PrevUserCallbackWindowFocus(window, focused);
@@ -441,6 +473,11 @@ void ImGui_ImplGlfw_WindowFocusCallback(GLFWwindow* window, int focused)
 
 void ImGui_ImplGlfw_CursorPosCallback(GLFWwindow* window, double x, double y)
 {
+    /* == Modified by SkaLe == */
+    if (g_CustomCursorPosCallback)
+        g_CustomCursorPosCallback(window, x, y);
+    /* ======================= */
+
     ImGui_ImplGlfw_Data* bd = ImGui_ImplGlfw_GetBackendData();
     if (bd->PrevUserCallbackCursorPos != nullptr && ImGui_ImplGlfw_ShouldChainCallback(window))
         bd->PrevUserCallbackCursorPos(window, x, y);
@@ -461,6 +498,11 @@ void ImGui_ImplGlfw_CursorPosCallback(GLFWwindow* window, double x, double y)
 // so we back it up and restore on Leave/Enter (see https://github.com/ocornut/imgui/issues/4984)
 void ImGui_ImplGlfw_CursorEnterCallback(GLFWwindow* window, int entered)
 {
+    /* == Modified by SkaLe == */
+    if (g_CustomCursorEnterCallback)
+        g_CustomCursorEnterCallback(window, entered);
+    /* ======================= */
+
     ImGui_ImplGlfw_Data* bd = ImGui_ImplGlfw_GetBackendData();
     if (bd->PrevUserCallbackCursorEnter != nullptr && ImGui_ImplGlfw_ShouldChainCallback(window))
         bd->PrevUserCallbackCursorEnter(window, entered);
@@ -481,6 +523,11 @@ void ImGui_ImplGlfw_CursorEnterCallback(GLFWwindow* window, int entered)
 
 void ImGui_ImplGlfw_CharCallback(GLFWwindow* window, unsigned int c)
 {
+    /* == Modified by SkaLe == */
+    if (g_CustomCharCallback)
+        g_CustomCharCallback(window, c);
+    /* ======================= */
+
     ImGui_ImplGlfw_Data* bd = ImGui_ImplGlfw_GetBackendData();
     if (bd->PrevUserCallbackChar != nullptr && ImGui_ImplGlfw_ShouldChainCallback(window))
         bd->PrevUserCallbackChar(window, c);
